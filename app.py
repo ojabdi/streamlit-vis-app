@@ -19,7 +19,7 @@ st.set_option('deprecation.showfileUploaderEncoding', False)
 st.title("Data Visualizations App")
 
 #add sub header
-st.sidebar.subheader("Visualization settings ")
+st.sidebar.subheader("Visualization settings - New updates!! ")
 
 #set upt the file upload
 file_uploaded = st.sidebar.file_uploader(
@@ -40,8 +40,8 @@ if file_uploaded is not None:
 #print the dataframe on 
 global numeric_columsn
 try:
-    df = df[:1000]
-    st.write(df)
+    df = df[:2000]
+    st.write(df.head())
     #filter numeric datatypes
     numeric_columsn = df.select_dtypes(
         ['float','int','int64','float64']).columns.tolist()
@@ -85,3 +85,22 @@ if chart_selections =="ScatterPlot":
     except Exception as e:
         print(e)
 
+#line plot
+if chart_selections =="LinePlots":
+    st.sidebar.subheader('LinePlots')
+    try:
+
+        x_values = st.sidebar.selectbox('X axis', options=numeric_columsn)
+        y_values = st.sidebar.selectbox('Y axis', options=numeric_columsn)
+        plot = px.line(data_frame= df, x = x_values, y = y_values)
+
+        #display the plots 
+        st.plotly_chart(plot)
+
+        #heatmap
+        selecct_box = st.sidebar.checkbox("HeatMap")
+        if selecct_box:
+            corr_heatmap(x_values,y_values)
+
+    except Exception as e:
+        print(e)
